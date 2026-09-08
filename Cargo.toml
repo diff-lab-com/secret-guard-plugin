@@ -1,0 +1,26 @@
+[package]
+name = "secret-guard-plugin"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+license = "MIT"
+authors = ["Shannon Contributors"]
+description = "Secret-guard plugin implementing shannon-plugin-api::ContextTransform (blueprint artifact b)"
+repository = "https://github.com/diff-lab-com/secret-guard-plugin"
+
+# Blueprint: docs/research/llm-secret-redaction-research-2026-09.md §9 (artifact b).
+# Thin adapter: implements the host contract (shannon-plugin-api) over the
+# pure primitives (secret-guard). Policy interpretation reads the policy the
+# host supplies; the pilot registry lives here (see README "registry scope").
+#
+# Dependency note: during development both deps are sibling path checkouts
+# (three artifacts, three separate git repos). On publish, switch to git /
+# crates.io dependencies:
+#   secret-guard       = { git = "https://github.com/diff-lab-com/secret-guard" }
+#   shannon-plugin-api = { git = "https://github.com/diff-lab-com/shannon-agent" }  # workspace member crate
+
+[dependencies]
+secret-guard = { path = "../secret-guard" }
+shannon-plugin-api = { path = "../shannon-plugin-api/crates/shannon-plugin-api" }
+serde_json = "1"
+tracing = "0.1"
