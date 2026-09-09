@@ -24,8 +24,9 @@ jobs:
       - name: Assemble sibling layout expected by path dependencies
         run: |
           ln -s "$GITHUB_WORKSPACE/secret-guard" "$GITHUB_WORKSPACE/../secret-guard"
-          mkdir -p "$GITHUB_WORKSPACE/../shannon-plugin-api"
-          ln -s "$GITHUB_WORKSPACE/shannon-agent/crates" "$GITHUB_WORKSPACE/../shannon-plugin-api/crates"
+          mkdir -p "$GITHUB_WORKSPACE/../shannon-plugin-api/crates"
+          ln -s "$GITHUB_WORKSPACE/shannon-agent/crates/shannon-plugin-api" \
+            "$GITHUB_WORKSPACE/../shannon-plugin-api/crates/shannon-plugin-api"
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: "1.88"
