@@ -24,13 +24,11 @@ repository = "https://github.com/diff-lab-com/secret-guard-plugin"
 #     crate merged 2026-09-09 via PR #85).
 
 [dependencies]
-secret-guard = { git = "ssh://git@github.com/diff-lab-com/secret-guard.git" }
-shannon-plugin-api = { git = "ssh://git@github.com/diff-lab-com/shannon-agent.git", branch = "dev" }
+secret-guard = "0.1.0"
+shannon-plugin-api = "0.11.0"
 serde_json = "1"
 tracing = "0.1"
 
-[patch."ssh://git@github.com/diff-lab-com/secret-guard.git"]
+[patch.crates-io]
 secret-guard = { path = "../secret-guard" }
-
-[patch."ssh://git@github.com/diff-lab-com/shannon-agent.git"]
 shannon-plugin-api = { path = "../shannon-plugin-api/crates/shannon-plugin-api" }
