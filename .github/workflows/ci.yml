@@ -7,11 +7,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # Self at $GITHUB_WORKSPACE; both path-dep siblings live OUTSIDE it
+      # (../secret-guard, ../shannon-plugin-api), so check them out into the
+      # workspace and symlink them into the expected sibling locations.
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
           repository: diff-lab-com/secret-guard
           path: secret-guard
+      - uses: actions/checkout@v4
+        with:
+          repository: diff-lab-com/shannon-agent
+          ref: feat/secret-guard-plugin-api   # switch to dev after #85 merges
+          sparse-checkout: crates/shannon-plugin-api
+          path: shannon-agent
+      - name: Assemble sibling layout expected by path dependencies
+        run: |
+          ln -s "$GITHUB_WORKSPACE/secret-guard" "$GITHUB_WORKSPACE/../secret-guard"
+          mkdir -p "$GITHUB_WORKSPACE/../shannon-plugin-api"
+          ln -s "$GITHUB_WORKSPACE/shannon-agent/crates" "$GITHUB_WORKSPACE/../shannon-plugin-api/crates"
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: "1.88"
