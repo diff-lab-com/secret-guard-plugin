@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: diff-lab-com/shannon-agent
-          ref: feat/secret-guard-plugin-api   # switch to dev after #85 merges
+          ref: dev                            # PR #85 merged 2026-09-09
           sparse-checkout: crates/shannon-plugin-api
           path: shannon-agent
       - name: Assemble sibling layout expected by path dependencies
