@@ -13,14 +13,24 @@ repository = "https://github.com/diff-lab-com/secret-guard-plugin"
 # pure primitives (secret-guard). Policy interpretation reads the policy the
 # host supplies; the pilot registry lives here (see README "registry scope").
 #
-# Dependency note: during development both deps are sibling path checkouts
-# (three artifacts, three separate git repos). On publish, switch to git /
-# crates.io dependencies:
-#   secret-guard       = { git = "https://github.com/diff-lab-com/secret-guard" }
-#   shannon-plugin-api = { git = "https://github.com/diff-lab-com/shannon-agent" }  # workspace member crate
+# Primary sources are the repo URLs (SSH protocol); [patch] redirects them to
+# sibling checkouts when present, so local three-repo development picks up
+# uncommitted changes while CI and fresh clones resolve from GitHub.
+#   - CI: checkouts + symlinks recreate the sibling layout (see ci.yml) —
+#     cargo never fetches the git sources.
+#   - Fresh clone of THIS repo alone: cargo fetches over SSH, so a GitHub
+#     SSH key is required (crates.io publish in T5 removes this).
+#   - shannon-plugin-api branch: switch to `dev` once shannon-agent PR #85
+#     merges (the contract crate lands on dev with it).
 
 [dependencies]
-secret-guard = { path = "../secret-guard" }
-shannon-plugin-api = { path = "../shannon-plugin-api/crates/shannon-plugin-api" }
+secret-guard = { git = "ssh://git@github.com/diff-lab-com/secret-guard.git" }
+shannon-plugin-api = { git = "ssh://git@github.com/diff-lab-com/shannon-agent.git", branch = "feat/secret-guard-plugin-api" }
 serde_json = "1"
 tracing = "0.1"
+
+[patch."ssh://git@github.com/diff-lab-com/secret-guard.git"]
+secret-guard = { path = "../secret-guard" }
+
+[patch."ssh://git@github.com/diff-lab-com/shannon-agent.git"]
+shannon-plugin-api = { path = "../shannon-plugin-api/crates/shannon-plugin-api" }
